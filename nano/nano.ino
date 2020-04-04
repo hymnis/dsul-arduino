@@ -6,7 +6,7 @@
 #define PATCH       0
 
 #define NEOPIN      3
-#define NUMPIXELS   1  // 7 * 3 = 21 bytes of RAM used
+#define NUMPIXELS   1  // NUMPIXELS * 3 = bytes of RAM used
 #define BRIGHT_MIN  10
 #define BRIGHT_MAX  120
 
