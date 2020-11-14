@@ -1,0 +1,5 @@
+html/
+Doxyfile
+Doxyfile.bak
+doxygen_sqlite3.db
+todo.md
