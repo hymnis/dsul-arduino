@@ -21,7 +21,7 @@ uint8_t show_mode = 1; // default mode, 1 = solid
 uint8_t input_count = 0;
 bool input_state = LOW;
 char input_string[10] = "";
-uint8_t time = 0;
+uint8_t current_time = 0;
 bool wait_state = false;
 uint16_t host_timeout = 60; // default timeout, 60 seconds
 
@@ -79,7 +79,7 @@ void colorFade() {
 void sendOk() {
   Serial.println("+!#");
   wait_state = false;
-  time = 0;
+  current_time = 0;
 }
 
 // send NOK command
@@ -255,7 +255,7 @@ void loop() {
   } else {
     // set LEDs to proper state
     if (show_mode == 2) {
-      if ((time % 2) == 0) {
+      if ((current_time % 2) == 0) {
         leds->setBrightness(show_brightness);
       } else {
         leds->setBrightness(1);
@@ -263,11 +263,11 @@ void loop() {
     }
     colorWipe(0, current_color);
 
-    time++;
+    current_time++;
 
-    if (time > host_timeout) {
+    if (current_time > host_timeout) {
       // it's past timeout! prepare for fade and send ping to host
-      time = 0;
+      current_time = 0;
       wait_state = true;
       show_mode = 1;
       leds->setBrightness(50);
