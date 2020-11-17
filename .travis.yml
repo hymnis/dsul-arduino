@@ -1,6 +1,6 @@
 language: c
-
-sudo: false
+os: linux
+dist: xenial
 
 cache:
   directories:
@@ -38,7 +38,13 @@ install:
 
 script:
    - python run-clang-format.py -r .
-   - build_main_platforms
+   - build_platform uno
+   - build_platform leonardo
+   - build_platform mega2560
+   - build_platform zero
+   - build_platform trinket_m0
+   - build_platform metro_m4
+   - build_platform esp8266
 
 after_success:
   - source <(curl -SLs  https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/library_check.sh)
