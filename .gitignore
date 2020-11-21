@@ -2,4 +2,8 @@ html/
 Doxyfile
 Doxyfile.bak
 doxygen_sqlite3.db
-todo.md
+todo.mdi
+*.hex
+*.elf
+*.bin
+*.eep

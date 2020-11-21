@@ -57,7 +57,7 @@ This is always the first character sent.
 The following actions are supported:
 
 - `l`: set LED color  
-  Message example: `+l000111222#`
+  Message example: `+l000111222333#`
 - `b`: set brightness  
   Message example: `+b000#`
 - `m`: set display mode (solid or blinking)  

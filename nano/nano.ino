@@ -3,7 +3,7 @@
 
 #define MAJOR       0
 #define MINOR       1
-#define PATCH       1
+#define PATCH       2
 
 #define NEOPIN      3
 #define NUMPIXELS   1  // NUMPIXELS * 3 = bytes of RAM used
@@ -13,16 +13,18 @@
 Adafruit_NeoPixel *leds;
 int NEOFORMAT = NEO_GRB + NEO_KHZ800;
 uint16_t show_brightness = 50;  // default brightness (1-255)
+uint16_t i = 0;
 uint16_t r = 0;
 uint16_t g = 64;
 uint16_t b = 0;
-uint32_t current_color = 0;
+uint32_t current_color[NUMPIXELS + 1];
 uint8_t show_mode = 1; // default mode, 1 = solid
 uint8_t input_count = 0;
 bool input_state = LOW;
-char input_string[10] = "";
+char input_string[13] = "";
 uint8_t current_time = 0;
 bool wait_state = false;
+bool color_reset = false;
 uint16_t host_timeout = 60; // default timeout, 60 seconds
 
 
@@ -32,11 +34,12 @@ void setLed(byte index, uint32_t color) {
   leds->setPixelColor(index, color);
 }
 
-// perform actual LED state update
+// perform actual LED state update for specific LED
 void colorWipe(int index, uint32_t color) {
   if (index == 0) {
     // set color for all LEDs
-    for(uint16_t i=0; i<leds->numPixels(); i++) {
+    for (uint16_t i = 0; i < leds->numPixels(); i++) {
+      if (i > 0) { current_color[i] = 0; } // clear individual values
       setLed(i, color);
     }
   } else {
@@ -72,13 +75,14 @@ void colorFade() {
   }
   colorWipe(0, leds->Color(r, g, b));
 
-  delay(85);
+  delay(70);
 }
 
 // send OK command
 void sendOk() {
   Serial.println("+!#");
   wait_state = false;
+  color_reset = true;
   current_time = 0;
 }
 
@@ -110,8 +114,8 @@ bool receiveInput() {
       new_state = HIGH;
     } else {
       // receiving data
-      if (input_count > 10) {
-        input_state = LOW;
+      if (input_count > 13) {
+        // received more chars than we should. abort
         sendNOK();
         resetInput();
       } else {
@@ -137,22 +141,29 @@ void handleInput() {
   if (type == '-') {  // - = 45
     if (key == '!') {  // ! = 33
       // information requested
-      // respond with version, color, brightness and mode
-      char response_v[10];
-      char response_c[10];
-      char response_b[4];
-      char response_m[4];
+      // respond with version, leds, color, brightness and mode
+      char response_v[12];
+      char response_ll[5];
+      char response_lb[9];
+      char response_cc[7];
+      char response_cb[5];
+      char response_cm[5];
 
       sprintf(response_v, "v%03d.%03d.%03d", MAJOR, MINOR, PATCH);
       Serial.print(response_v);
-      sprintf(response_c, "c%03d%03d%03d", r, g, b);
-      Serial.print(response_c);
-      sprintf(response_b, "b%03d", show_brightness);
-      Serial.print(response_b);
-      sprintf(response_m, "m%03d", show_mode);
-      Serial.print(response_m);
-
-      sendOk();
+      sprintf(response_ll, "ll%03d", leds->numPixels());
+      Serial.print(response_ll);
+      sprintf(response_lb, "lb%03d:%03d", BRIGHT_MIN, BRIGHT_MAX);
+      Serial.print(response_lb);
+      for (int n = 0; n <= NUMPIXELS; n++) {
+        sprintf(response_cc, "cc%03d:%s", n, current_color[n]);
+        Serial.print(response_cc);
+      }
+      sprintf(response_cb, "cb%03d", show_brightness);
+      Serial.print(response_cb);
+      sprintf(response_cm, "cm%03d", show_mode);
+      Serial.print(response_cm);
+      Serial.print("#");
     } else if (key == '?') {  // ? = 63
       // ping received
       sendOk();
@@ -162,34 +173,41 @@ void handleInput() {
   } else if (type == '+') {  // + = 43
     if (key == 'l') {
       // set LED color
-      // l rrrgggbbb
-      char color_value[3] = "";
-      color_value[0] = input_string[2];
-      color_value[1] = input_string[3];
-      color_value[2] = input_string[4];
-      color_value[3] = '\0';
-      r = atoi(color_value);
-      r = constrain(r, 0, 255);
+      // +l iii rrrgggbbb
+      char index_value[4] = "";
+      char color_value[4] = "";
+      index_value[0] = input_string[2];
+      index_value[1] = input_string[3];
+      index_value[2] = input_string[4];
+      index_value[3] = '\0';
+      i = atoi(index_value);
+      i = constrain(i, 0, NUMPIXELS);
       color_value[0] = input_string[5];
       color_value[1] = input_string[6];
       color_value[2] = input_string[7];
       color_value[3] = '\0';
-      g = atoi(color_value);
-      g = constrain(g, 0, 255);
+      r = atoi(color_value);
+      r = constrain(r, 0, 255);
       color_value[0] = input_string[8];
       color_value[1] = input_string[9];
       color_value[2] = input_string[10];
       color_value[3] = '\0';
+      g = atoi(color_value);
+      g = constrain(g, 0, 255);
+      color_value[0] = input_string[11];
+      color_value[1] = input_string[12];
+      color_value[2] = input_string[13];
+      color_value[3] = '\0';
       b = atoi(color_value);
       b = constrain(b, 0, 255);
 
-      current_color = leds->Color(r, g, b);
-      colorWipe(0, current_color);
+      current_color[i] = leds->Color(r, g, b);
+      colorWipe(i, current_color[i]);
       sendOk();
     } else if (key == 'b') {
       // set led BRIGHTNESS
-      // b xxx
-      char bright_value[3] = "";
+      // +b xxx
+      char bright_value[4] = "";
       bright_value[0] = input_string[2];
       bright_value[1] = input_string[3];
       bright_value[2] = input_string[4];
@@ -202,16 +220,16 @@ void handleInput() {
       sendOk();
     } else if (key == 'm') {
       // set show MODE
-      // m xxx
+      // +m xxx
       uint8_t old_value = show_mode;
-      char show_value[3] = "";
+      char show_value[4] = "";
       show_value[0] = input_string[2];
       show_value[1] = input_string[3];
       show_value[2] = input_string[4];
       show_value[3] = '\0';
       show_mode = atoi(show_value);
 
-      if(show_mode > 2 || show_mode < 1) {
+      if(show_mode > 3 || show_mode < 1) {
         show_mode = old_value;
       }
 
@@ -236,8 +254,8 @@ void setup() {
   leds->clear();
   leds->setBrightness(show_brightness);
 
-  current_color = leds->Color(0, 0, 0); // default color, 000 = black (off)
-  colorWipe(0, current_color);
+  current_color[0] = leds->Color(0, 0, 0); // default color, 000 = black (off)
+  colorWipe(0, current_color[0]);
   wait_state = true;
 }
 
@@ -254,14 +272,35 @@ void loop() {
     colorFade();
   } else {
     // set LEDs to proper state
+    uint16_t final_delay = 1000;
+
+    if (color_reset == true) {
+      color_reset = false;
+      colorWipe(0, current_color[0]);
+    }
+
     if (show_mode == 2) {
+      // blink
       if ((current_time % 2) == 0) {
         leds->setBrightness(show_brightness);
       } else {
         leds->setBrightness(1);
       }
+    } else if (show_mode == 3) {
+      // flash
+      leds->setBrightness(1);
+      leds->show();
+      delay(250);
+      leds->setBrightness(show_brightness);
+      leds->show();
+      delay(250);
+      leds->setBrightness(1);
+      leds->show();
+      delay(250);
+      leds->setBrightness(show_brightness);
+      final_delay = 250;
     }
-    colorWipe(0, current_color);
+    leds->show();
 
     current_time++;
 
@@ -276,7 +315,8 @@ void loop() {
       b = 0;
       sendPing();
     }
-    delay(1000);
+
+    delay(final_delay);
   }
 
   if (newState == HIGH) {
