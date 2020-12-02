@@ -1,4 +1,4 @@
-// // DSUL - Disturb State USB Light : DsulTimer class
+// DSUL - Disturb State USB Light : DsulTimer class
 
 class DsulTimer {
 public:

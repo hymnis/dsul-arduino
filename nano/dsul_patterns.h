@@ -1,4 +1,4 @@
-// // DSUL - Disturb State USB Light : DsulPatterns class
+// DSUL - Disturb State USB Light : DsulPatterns class
 #include <Adafruit_NeoPixel.h>
 
 enum pattern { NONE, RAINBOW, SOLID, BLINK, PULSE };

@@ -1,13 +1,14 @@
 # DSUL - Disturb State USB Light
 
 [![Build Status](https://travis-ci.org/hymnis/dsul-arduino.svg?branch=master)](https://travis-ci.org/hymnis/dsul-arduino)
+[![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 The goal of the project is to have a USB connected light, that can be be set to different colors, with adjustable brightness and different modes, which can communicate the users current preference regarding being disturbed.
 
 
 ## Hardware
 
-The hardware used is an Arduino connected to a Neopixel module. The project was developed using an Arduino Nano (compatible) device, but should work on many Arduino models as long as the firmware fit and it has enough RAM for the number of LED's used in the module.
+The hardware used is an Arduino connected to a NeoPixel module. The project was developed using an Arduino Nano (compatible) device, but should work on many Arduino models as long as the firmware fit and it has enough RAM for the number of LED's used in the module.
 
 Automated builds using [Travis-CI](https://travis-ci.org/) are made for the following platforms:
 
@@ -19,12 +20,12 @@ Automated builds using [Travis-CI](https://travis-ci.org/) are made for the foll
 - Metro M4
 - Trinket M0
 
-Since there are both hardware (current) and software (RAM) limitations to how many LED's/Neopixels can be handled at once by the Arduino, it's important to first check the specifications on the Arduino model used and calculate the maximum number that can be used.
+Since there are both hardware (current) and software (RAM) limitations to how many LED's/NeoPixel can be handled at once by the Arduino, it's important to first check the specifications on the Arduino model used and calculate the maximum number that can be used.
 
 
 ## Firmware
 
-It's possible to adjust the number of LED's used by editing the `NUMPIXELS` variable. Keep in mind how much RAM the Arduino model used has available. With the Neopixel library that this project uses, each LED needs 3 bytes of RAM.
+It's possible to adjust the number of LED's used by editing the `NUMPIXELS` variable. Keep in mind how much RAM the Arduino model used has available. With the NeoPixel library that this project uses, each LED needs 3 bytes of RAM. `NEOPIN` holds the pin number for where the NeoPixel have been connected.
 
 ### Dependencies
 
@@ -76,7 +77,7 @@ The following requests are supported:
 
 Status commands are used by both host and device. They can be sent as a singular command or as a terminator to data sequence.
 
-Both host and device can send ping command and then expects the other part to reply with a pong command. If no other command is sent after a minute, a ping is sent to verify a working connection. Until communication is restored the LED(s) will slowly fade.
+Both host and device can send ping command and then expects the other part to reply with a pong command. If no other command is sent after a minute, a ping is sent to verify a working connection. Until communication is restored the LED(s) will slowly cycle through the colors.
 
 - `+!`: OK/Pong
 - `-!`: Resend/Request data
