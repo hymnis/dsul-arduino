@@ -10,8 +10,8 @@ class DsulPatterns : public Adafruit_NeoPixel {
     pattern  ActivePattern;
     direction Direction;
 
-    unsigned long Interval;
-    unsigned long lastUpdate;
+    uint32_t Interval;
+    uint32_t lastUpdate;
 
     uint32_t Color1;
     uint16_t BrightnessHigh, BrightnessLow;

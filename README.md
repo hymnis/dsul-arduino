@@ -93,3 +93,11 @@ This always the last character sent.
 ## Computer software
 
 The software, daemon/server and client is available at [hymnis/dsul-python](https://github.com/hymnis/dsul-python).
+
+## Acknowledgements
+
+- Parts of the project (like `DsulTimer` and `DsulPatterns`) are inspired by an excellent article series of Bill Earl.  
+   Check out the articles at:
+   - [https://learn.adafruit.com/multi-tasking-the-arduino-part-1](https://learn.adafruit.com/multi-tasking-the-arduino-part-1)
+   - [https://learn.adafruit.com/multi-tasking-the-arduino-part-2](https://learn.adafruit.com/multi-tasking-the-arduino-part-2)
+   - [https://learn.adafruit.com/multi-tasking-the-arduino-part-3](https://learn.adafruit.com/multi-tasking-the-arduino-part-3)

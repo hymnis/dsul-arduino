@@ -15,8 +15,8 @@
 void dotComplete();
 void heartbeatComplete();
 
+uint32_t show_color = 0; // default color, 0 = black/off
 uint16_t show_brightness = 50;  // default brightness (1-255)
-uint32_t show_color;
 uint8_t show_mode = 1; // default mode, 1 = solid
 uint8_t input_count = 0;
 bool input_state = LOW;
@@ -30,7 +30,7 @@ DsulTimer Heartbeat(1000*host_timeout, &heartbeatComplete);
 
 // Send OK command
 void sendOk() {
-    Serial.println("+!#");
+    Serial.println(F("+!#"));
     wait_state = false;
     color_reset = true;
     Heartbeat.reset();
@@ -38,12 +38,12 @@ void sendOk() {
 
 // Send NOK command
 void sendNOK() {
-    Serial.println("-!#");
+    Serial.println(F("-!#"));
 }
 
 // Send a ping command
 void sendPing() {
-    Serial.println("-?#");
+    Serial.println(F("-?#"));
 }
 
 // Reset input variables
@@ -201,7 +201,7 @@ void setShowMode() {
 
 // Run once pattern is complete (if needed)
 void dotComplete() {
-    // Reverse direction for pulse on completion
+    // reverse direction for pulse on completion
     if (Dot.ActivePattern == PULSE) {
         Dot.Reverse();
     }
@@ -229,10 +229,10 @@ void loop()
 {
     bool newState = LOW;
 
-    // Update heartbeat timer
+    // update heartbeat timer
     Heartbeat.update();
 
-    // Update LEDs
+    // update LEDs
     Dot.Update();
 
     if (Serial.available() > 0) {
@@ -253,7 +253,7 @@ void loop()
     }
 
     if (newState == HIGH) {
-        // handle serial input if any
+        // handle serial input
         handleInput();
     }
 }

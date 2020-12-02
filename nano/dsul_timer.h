@@ -3,12 +3,12 @@
 class DsulTimer {
     public:
 
-    unsigned long Interval;
-    unsigned long lastUpdate;
+    uint32_t Interval;
+    uint32_t lastUpdate;
 
     void (*OnComplete)();
 
-    DsulTimer(unsigned long setTime, void (*callback)()) {
+    DsulTimer(uint32_t setTime, void (*callback)()) {
         Interval = setTime;
         OnComplete = callback;
     }
