@@ -17,11 +17,14 @@ public:
   uint16_t TotalSteps;
   uint16_t Index;
 
+  bool Dim;
+
   void (*OnComplete)();
 
   DsulPatterns(uint16_t pixels, uint8_t pin, uint8_t type, void (*callback)())
       : Adafruit_NeoPixel(pixels, pin, type) {
     OnComplete = callback;
+    Dim = false;
   }
 
   // Update the pattern
@@ -92,7 +95,11 @@ public:
   // Update the Rainbow pattern
   void RainbowUpdate() {
     for (int i = 0; i < numPixels(); i++) {
-      setPixelColor(i, Wheel(((i * 256 / numPixels()) + Index) & 255));
+      uint32_t color = Wheel(((i * 256 / numPixels()) + Index) & 255);
+      if (Dim) {
+        color = DimColor(color);
+      }
+      setPixelColor(i, color);
     }
     show();
     Increment();
@@ -166,6 +173,9 @@ public:
 
   // Set all pixels to a color (synchronously)
   void ColorSet(uint32_t color) {
+    if (Dim) {
+      color = DimColor(color);
+    }
     for (int i = 0; i < numPixels(); i++) {
       setPixelColor(i, color);
     }

@@ -4,9 +4,10 @@
 
 // Version
 #define MAJOR 0
-#define MINOR 2
-#define PATCH 1
+#define MINOR 3
+#define PATCH 0
 
+// Fixed values
 #define NEOPIN 3
 #define NUMPIXELS 1
 #define BRIGHT_MIN 10
@@ -18,6 +19,7 @@ void heartbeatComplete();
 uint32_t show_color = 0;       // default color, 0 = black/off
 uint16_t show_brightness = 50; // default brightness (1-255)
 uint8_t show_mode = 1;         // default mode, 1 = solid
+bool show_dim = false;         // default dime state, false = no dimming
 uint8_t input_count = 0;
 bool input_state = LOW;
 char input_string[13] = "";
@@ -94,6 +96,7 @@ void handleInput() {
       char response_cc[9];
       char response_cb[6];
       char response_cm[6];
+      char response_cd[4];
 
       sprintf(response_v, "v%03d.%03d.%03d", MAJOR, MINOR, PATCH);
       Serial.print(response_v);
@@ -107,6 +110,8 @@ void handleInput() {
       Serial.print(response_cb);
       sprintf(response_cm, "cm%03d", show_mode);
       Serial.print(response_cm);
+      sprintf(response_cd, "cd%01d", show_dim);
+      Serial.print(response_cd);
       Serial.println("#");
     } else if (key == '?') { // ? = 63
       // ping received
@@ -169,6 +174,16 @@ void handleInput() {
 
       setShowMode();
       sendOk();
+    } else if (key == 'd') {
+      // set led color DIM
+      // +d x
+      char dim_value[2] = "";
+      dim_value[0] = input_string[2];
+      dim_value[1] = '\0';
+      show_dim = atoi(dim_value);
+
+      setDimMode();
+      sendOk();
     } else {
       sendNOK(); // unknown key, not OK
     }
@@ -192,6 +207,15 @@ void setShowMode() {
     Dot.Blink(show_color, 250);
   } else if (show_mode == 4) { // pulse mode
     Dot.Pulse(show_color, 20, BRIGHT_MAX);
+  }
+}
+
+// Set the current dim mode
+void setDimMode() {
+  if (show_dim) {
+    Dot.Dim = true;
+  } else {
+    Dot.Dim = false;
   }
 }
 
@@ -243,6 +267,7 @@ void loop() {
       // wait is over. continue from last mode and color
       color_reset = false;
       setShowMode();
+      setDimMode();
     }
   }
 
