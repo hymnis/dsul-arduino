@@ -25,7 +25,7 @@ Since there are both hardware (current) and software (RAM) limitations to how ma
 
 ## Firmware
 
-It's possible to adjust the number of LED's used by editing the `NUMPIXELS` variable. Keep in mind how much RAM the Arduino model used has available. With the NeoPixel library that this project uses, each LED needs 3 bytes of RAM. `NEOPIN` holds the pin number for where the NeoPixel have been connected.
+It's possible to adjust the number of LED's used by editing the `NUMPIXELS` variable. Keep in mind how much RAM the Arduino model used has available. With the NeoPixel library that this project uses, each LED needs 3 bytes of RAM. `NEOPIN` holds the pin number for where the NeoPixel module has been connected.
 
 ### Dependencies
 
@@ -58,11 +58,13 @@ This is always the first character sent.
 The following actions are supported:
 
 - `l`: set LED color  
-  Message example: `+l000111222333#`
+  Message example: `+l000111222#`
 - `b`: set brightness  
   Message example: `+b000#`
-- `m`: set display mode (solid or blinking)  
+- `m`: set display mode (solid, blinking etc.)  
   Message example: `+m000#`
+- `d`: set dim mode (dimmed or not)  
+  Message example: `+d0#`
 
 **- messages**
 
