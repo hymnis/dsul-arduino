@@ -8,7 +8,7 @@ The goal of the project is to have a USB connected light, that can be be set to 
 
 ## Hardware
 
-The hardware used is an Arduino connected to a NeoPixel module. The project was developed using an Arduino Nano (compatible) device, but should work on many Arduino models as long as the firmware fit and it has enough RAM for the number of LED's used in the module.
+The hardware used is an Arduino connected to a NeoPixel module. The project was developed using an Arduino Nano (compatible) device, but should work on many Arduino models as long as the firmware fit, it has enough RAM for the number of LED's used in the module and support the basic libraries.
 
 Automated builds using [Travis-CI](https://travis-ci.org/) are made for the following platforms:
 
