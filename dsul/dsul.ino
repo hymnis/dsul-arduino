@@ -1,11 +1,11 @@
-// DSUL - Disturb State USB Light : Arduino Nano
+// DSUL - Disturb State USB Light : Arduino Firmware
 #include "dsul_patterns.h"
 #include "dsul_timer.h"
 
 // Version
 #define MAJOR 0
 #define MINOR 3
-#define PATCH 0
+#define PATCH 1
 
 // Fixed values
 #define NEOPIN 3

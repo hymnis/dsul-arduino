@@ -27,7 +27,7 @@ addons:
 
 env:
   global:
-     - PRETTYNAME="DSUL - Nano"
+     - PRETTYNAME="DSUL"
 
 before_install:
    - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
