@@ -30,8 +30,8 @@ env:
      - PRETTYNAME="DSUL"
 
 before_install:
-   - rm /usr/bin/python
-   - ln -s /usr/bin/python3.6 /usr/bin/python
+   - sudo rm /usr/bin/python
+   - sudo ln -s /usr/bin/python3.6 /usr/bin/python
    - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
    - curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/run-clang-format.py > run-clang-format.py
 
