@@ -17,10 +17,6 @@ Automated builds using [Travis-CI](https://travis-ci.com/) are made for the foll
 - Mega 2560
 - Zero
 - ESP8266
-- Metro M4
-- Trinket M0
-- Raspberry Pi Pico
-- Feather RP2040
 
 Since there are both hardware (current) and software (RAM) limitations to how many LED's/NeoPixel can be handled at once by the Arduino, it's important to first check the specifications on the Arduino model used and calculate the maximum number that can be used.
 
