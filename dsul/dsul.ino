@@ -196,7 +196,7 @@ void handleInput() {
 
 // Set the current mode
 void setShowMode() {
-  if (show_mode == 0) { // no mode, do nothing
+  if (show_mode == 0) { // off mode
     Dot.ActivePattern = NONE;
     Dot.Color1 = Dot.Color(0, 0, 0);
   } else if (show_mode == 1) { // solid mode
@@ -239,7 +239,7 @@ void setup() {
 
   Dot.begin();
   Dot.setBrightness(50);
-  Dot.Rainbow(55);
+  Dot.Rainbow(45);
   show_color = Dot.Color(0, 0, 0); // set color to black/off as default
 }
 
@@ -258,7 +258,7 @@ void loop() {
     newState = receiveInput();
   } else if (wait_state) {
     // wait for host connection
-    // cycke LED colors while waiting
+    // cycle LED colors while waiting
     Dot.ActivePattern = RAINBOW;
     Dot.Interval = 45;
     Dot.TotalSteps = 255;

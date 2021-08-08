@@ -1,6 +1,6 @@
 # DSUL - Disturb State USB Light
 
-[![Build Status](https://travis-ci.org/hymnis/dsul-arduino.svg?branch=master)](https://travis-ci.org/hymnis/dsul-arduino)
+[![Build Status](https://travis-ci.com/hymnis/dsul-arduino.svg?branch=master)](https://travis-ci.com/github/hymnis/dsul-arduino)
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 The goal of the project is to have a USB connected light, that can be be set to different colors, with adjustable brightness and different modes, which can communicate the users current preference regarding being disturbed.
@@ -10,7 +10,7 @@ The goal of the project is to have a USB connected light, that can be be set to 
 
 The hardware used is an Arduino connected to a NeoPixel module. The project was developed using an Arduino Nano (compatible) device, but should work on many Arduino models as long as the firmware fit, it has enough RAM for the number of LED's used in the module and support the basic libraries.
 
-Automated builds using [Travis-CI](https://travis-ci.org/) are made for the following platforms:
+Automated builds using [Travis-CI](https://travis-ci.com/) are made for the following platforms:
 
 - Uno
 - Leonardo
@@ -19,6 +19,8 @@ Automated builds using [Travis-CI](https://travis-ci.org/) are made for the foll
 - ESP8266
 - Metro M4
 - Trinket M0
+- Raspberry Pi Pico
+- Feather RP2040
 
 Since there are both hardware (current) and software (RAM) limitations to how many LED's/NeoPixel can be handled at once by the Arduino, it's important to first check the specifications on the Arduino model used and calculate the maximum number that can be used.
 
@@ -90,8 +92,19 @@ Both host and device can send ping command and then expects the other part to re
 
 All commands and sequences are terminated with a `#`.
 
-This always the last character sent.
+This is always the last character sent.
 
+### Modes
+
+Currently there are five user settable modes and one extra mode for when disconnected.
+The `off` mode has the same effect as sending the color `black`, i.e. turn the LED off.
+If there's no connection to the DSUL daemon (on the computer side), the LED will slowly cycle through all colors over and over.
+
+- 0/`off`: Turns off LED
+- 1/`solid`: Turns on LED and keeps consistently on
+- 2/`blink`: Blinks the LED
+- 3/`flash`: Blinks the LED faster (flashes)
+- 4/`pulse`: Pulses the LED from min to max brightness
 
 ## Computer software
 

@@ -8,3 +8,4 @@ board-info.*.md
 *.elf
 *.bin
 *.eep
+build/
