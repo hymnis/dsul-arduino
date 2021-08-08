@@ -12,7 +12,6 @@ The hardware used is an Arduino connected to a NeoPixel module. The project was 
 
 Automated builds using [Travis-CI](https://travis-ci.com/) are made for the following platforms:
 
-- Nano
 - Uno
 - Leonardo
 - Mega 2560
