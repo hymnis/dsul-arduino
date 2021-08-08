@@ -1,6 +1,6 @@
 language: c
 os: linux
-dist: xenial
+dist: bionic
 
 cache:
   directories:
@@ -30,6 +30,8 @@ env:
      - PRETTYNAME="DSUL"
 
 before_install:
+   - rm /usr/bin/python
+   - ln -s /usr/bin/python3.6 /usr/bin/python
    - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
    - curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/run-clang-format.py > run-clang-format.py
 
@@ -45,8 +47,6 @@ script:
    - build_platform trinket_m0
    - build_platform metro_m4
    - build_platform esp8266
-   - build_platform pico_rp2040
-   - build_platform feather_rp2040
 
 after_success:
   - source <(curl -SLs  https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/library_check.sh)
