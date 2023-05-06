@@ -10,13 +10,13 @@ The goal of the project is to have a USB connected light, that can be be set to 
 
 The hardware used is an Arduino connected to a NeoPixel module. The project was developed using an Arduino Nano (compatible) device, but should work on many Arduino models as long as the firmware fit, it has enough RAM for the number of LED's used in the module and support the basic libraries.
 
-Automated builds using [Travis-CI](https://travis-ci.com/) are made for the following platforms:
+Automated builds using [Github Actions](https://github.com/hymnis/dsul-arduino/actions) are made for the following platforms:
 
 - Uno
 - Leonardo
 - Mega 2560
-- Zero
-- ESP8266
+- Nano
+- Raspberry Pi Pico
 
 Since there are both hardware (current) and software (RAM) limitations to how many LED's/NeoPixel can be handled at once by the Arduino, it's important to first check the specifications on the Arduino model used and calculate the maximum number that can be used.
 

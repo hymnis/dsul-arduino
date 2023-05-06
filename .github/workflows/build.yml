@@ -46,7 +46,7 @@ jobs:
           sketch-paths: |
             - dsul
           libraries: |
-            - source-url: https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/1.11.0.zip
+            - source-url: https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/1.7.0.zip
       - name: Upload build reports
         uses: actions/upload-artifact@v3
         with:
