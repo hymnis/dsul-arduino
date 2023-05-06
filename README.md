@@ -1,6 +1,6 @@
 # DSUL - Disturb State USB Light
 
-[![Build Status](https://travis-ci.com/hymnis/dsul-arduino.svg?branch=master)](https://travis-ci.com/github/hymnis/dsul-arduino)
+[![Build Status](https://github.com/hymnis/dsul-arduino/actions/workflows/build.yml/badge.svg)](https://github.com/hymnis/dsul-arduino/actions)
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 The goal of the project is to have a USB connected light, that can be be set to different colors, with adjustable brightness and different modes, which can communicate the users current preference regarding being disturbed.
@@ -55,13 +55,13 @@ This is always the first character sent.
 
 The following actions are supported:
 
-- `l`: set LED color  
+- `l`: set LED color
   Message example: `+l000111222#`
-- `b`: set brightness  
+- `b`: set brightness
   Message example: `+b000#`
-- `m`: set display mode (solid, blinking etc.)  
+- `m`: set display mode (solid, blinking etc.)
   Message example: `+m000#`
-- `d`: set dim mode (dimmed or not)  
+- `d`: set dim mode (dimmed or not)
   Message example: `+d0#`
 
 **- messages**
@@ -70,7 +70,7 @@ The following actions are supported:
 
 The following requests are supported:
 
-- `!`: full information request  
+- `!`: full information request
   Message example: `-!#`
 
 #### Status commands
@@ -104,11 +104,11 @@ If there's no connection to the DSUL daemon (on the computer side), the LED will
 
 ## Computer software
 
-The software, daemon/server and client is available at [hymnis/dsul-python](https://github.com/hymnis/dsul-python).
+The software, daemon/server and client is available at [hymnis/dsul-python](https://github.com/hymnis/dsul-python) or [hymnis/dsul-go](https://github.com/hymnis/dsul-go).
 
 ## Acknowledgements
 
-- Parts of the project (like `DsulTimer` and `DsulPatterns`) are inspired by an excellent article series of Bill Earl.  
+- Parts of the project (like `DsulTimer` and `DsulPatterns`) are inspired by an excellent article series of Bill Earl.
    Check out the articles at:
    - [https://learn.adafruit.com/multi-tasking-the-arduino-part-1](https://learn.adafruit.com/multi-tasking-the-arduino-part-1)
    - [https://learn.adafruit.com/multi-tasking-the-arduino-part-2](https://learn.adafruit.com/multi-tasking-the-arduino-part-2)
