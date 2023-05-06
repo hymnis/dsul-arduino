@@ -1,6 +1,6 @@
 # DSUL - Disturb State USB Light
 
-[![Build Status](https://github.com/hymnis/dsul-arduino/actions/workflows/build.yml/badge.svg)](https://github.com/hymnis/dsul-arduino/actions)
+[![Build](https://github.com/hymnis/dsul-arduino/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/hymnis/dsul-arduino/actions/workflows/build.yml)
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 The goal of the project is to have a USB connected light, that can be be set to different colors, with adjustable brightness and different modes, which can communicate the users current preference regarding being disturbed.
