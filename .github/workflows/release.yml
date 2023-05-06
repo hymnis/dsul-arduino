@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  release:
+    types: [ created ]
+  workflow_dispatch:
+
+env:
+  NEOPIXEL_VERSION: 1.7.0
+
+jobs:
+  release:
+    name: Release DSUL FW
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        fqbn:
+          - arduino:avr:uno
+          - arduino:avr:leonardo
+          - arduino:avr:mega
+          - arduino:avr:nano
+          - arduino:mbed_rp2040:pico
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v1
+      - name: Extract platform variables
+        shell: bash
+        run: |
+          platform=$(echo "${{ matrix.fqbn }}" | awk -F'[:]' '{print $2}')
+          device=$(echo "${{ matrix.fqbn }}" | awk -F'[:]' '{print $3}')
+          echo "ARDUINO_PLATFORM=${platform}" >> "$GITHUB_ENV"
+          echo "ARDUINO_DEVICE=${device}" >> "$GITHUB_ENV"
+      - name: Install platform
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:${{ env.ARDUINO_PLATFORM }}
+      - name: Install dependencies
+        run: arduino-cli lib install "Adafruit NeoPixel"@${{ env.NEOPIXEL_VERSION }}
+      - name: Compile
+        run: arduino-cli compile --fqbn ${{ matrix.fqbn }} --export-binaries ./dsul
+      - name: Copy build artifacts
+        shell: bash
+        run: |
+          # dsul fw version
+          major=$(sed -n 's/^#define MAJOR \([0-9]*\)$/\1/p' ./dsul/dsul.ino)
+          minor=$(sed -n 's/^#define MINOR \([0-9]*\)$/\1/p' ./dsul/dsul.ino)
+          patch=$(sed -n 's/^#define PATCH \([0-9]*\)$/\1/p' ./dsul/dsul.ino)
+          version="${major}.${minor}.${patch}"
+          # create artifacts directory
+          mkdir -p ./artifacts
+          # copy artifact(s)
+          cp -v ./dsul/build/arduino.${{ env.ARDUINO_PLATFORM}}.${{ env.ARDUINO_DEVICE}}/dsul.ino.elf ./artifacts/dsul-${version}-${{ env.ARDUINO_PLATFORM}}-${{ env.ARDUINO_DEVICE}}.elf
+          cp -v ./dsul/build/arduino.${{ env.ARDUINO_PLATFORM}}.${{ env.ARDUINO_DEVICE}}/dsul.ino.hex ./artifacts/dsul-${version}-${{ env.ARDUINO_PLATFORM}}-${{ env.ARDUINO_DEVICE}}.hex
+          if [[ ("${{ env.ARDUINO_PLATFORM }}" == "mbed_rp2040") && ("${{ env.ARDUINO_DEVICE }}" == "pico") ]]; then
+            cp -v ./dsul/build/arduino.${{ env.ARDUINO_PLATFORM}}.${{ env.ARDUINO_DEVICE}}/dsul.ino.bin ./artifacts/dsul-${version}-${{ env.ARDUINO_PLATFORM}}-${{ env.ARDUINO_DEVICE}}.bin
+            cp -v ./dsul/build/arduino.${{ env.ARDUINO_PLATFORM}}.${{ env.ARDUINO_DEVICE}}/dsul.ino.uf2 ./artifacts/dsul-${version}-${{ env.ARDUINO_PLATFORM}}-${{ env.ARDUINO_DEVICE}}.uf2
+          fi
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries
+          path: ./artifacts/dsul*
+          if-no-files-found: error
+      - name: Finished
+        run: |
+          echo ":hammer: Build complete!" >> $GITHUB_STEP_SUMMARY
