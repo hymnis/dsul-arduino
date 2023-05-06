@@ -35,13 +35,15 @@ The serial interface allows for commands and data to be sent in both directions.
 
 #### Connection settings
 
-- Baudrate: 38400
-- Byte size: 8
-- Parity: None
-- Stopbits: 1
-- Timeout: None
-- XonXoff: 0
-- RtsCts: 0
+| Setting   | Value  |
+|-----------|--------|
+| Baudrate  | 38400  |
+| Byte size | 8      |
+| Parity    | None   |
+| Stopbits  | 1      |
+| Timeout   | None   |
+| XonXoff   | 0      |
+| RtsCts    | 0      |
 
 #### Message types
 
