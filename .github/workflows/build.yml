@@ -22,6 +22,7 @@ on:
 env:
   SKETCHES_REPORTS_PATH: sketches-reports
   SKETCHES_REPORTS_ARTIFACT_NAME: sketches-reports
+  NEOPIXEL_VERSION: 1.7.0
 
 jobs:
   build:
@@ -46,7 +47,7 @@ jobs:
           sketch-paths: |
             - dsul
           libraries: |
-            - source-url: https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/1.7.0.zip
+            - source-url: https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/${{ env.NEOPIXEL_VERSION }}.zip
       - name: Upload build reports
         uses: actions/upload-artifact@v3
         with:
